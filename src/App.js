@@ -1,47 +1,70 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 import {FilePreviewerThumbnail} from 'react-file-previewer';
 import _ from 'lodash';
+
+// let cssLink = document.createElement("link");
+// cssLink.href = './iframe-styles.css'; 
+// cssLink.rel = "stylesheet"; 
+// cssLink.type = "text/css"; 
+// frames['iframe-container'].document.head.appe ndChild(cssLink);
 
 function App() {
   const [activeDoc, setActiveDoc] = useState(null);
   const docList = [
     {
-      name: '1',
+      name: 'ft-lauderdale-info',
       type: 'pdf',
-      url: './documents/1.pdf'
+      url: './documents/ft-lauderdale-info.pdf'
     },
     {
-      name: '2',
+      name: 'me',
       type: 'jpg',
-      url: './documents/2.jpg'
+      url: './documents/me.jpg'
     },
     {
-      name: '3',
+      name: 'code-1',
       type: 'png',
-      url: './documents/3.png'
+      url: './documents/code-1.png'
     },
     {
-      name: '4',
+      name: 'code-2',
       type: 'jpg',
-      url: './documents/4.jpg'
+      url: './documents/code-2.jpg'
     },
     {
-      name: '5',
+      name: 'bitmap-graphic',
       type: 'bmp',
-      url: './documents/5.bmp'
+      url: './documents/bitmap-graphic.bmp'
     },
     {
-      name: '6',
+      name: 'word-document',
       type: 'docx',
-      url: './documents/6.docx'
+      url: './documents/word-document.docx'
     }
   ];
+  
+  
+  useEffect(() => {
+    applyIframeStylesheet();
+  }, []);
+  
+  const applyIframeStylesheet = () => {
+    let iframeElement = document.getElementById('iframe-container');
+    let doc = iframeElement.contentDocument;
+    if (doc && doc.body) { 
+      doc.body.innerHTML = doc.body.innerHTML+ `<style>body {height:100%;display:flex;justify-content:center;align-items:center;}</style>`;
+    }
+  }
 
   const changeActiveDoc = (id) => {
+    let iframeElement = document.getElementById('iframe-container');
+    let doc = iframeElement.contentDocument;
     let selectedDoc = _.find(docList, (item) => item.name === id);
-    console.log('selectedDoc:', selectedDoc);
     setActiveDoc({...selectedDoc});
+    setTimeout(() => {
+      applyIframeStylesheet();
+    }, 50)
   }
 
   let sideBarContent = docList.map(item => (
@@ -49,14 +72,13 @@ function App() {
       key={item.name}
       onClick={(id) => changeActiveDoc(item.name)}
       id={item.name}
+      className={`thumbnail-item ${activeDoc && item.name === activeDoc.name ? 'active' : ''}`}
     >
-      <FilePreviewerThumbnail 
-        file={{
-          url: item.url,
-          mimeType: item.type,
-          name: item.name
-        }}
+      <img 
+        src={`./icons/${item.type}-icon.png`}
+        alt="File type preview"
       />
+      <p>{item.name}</p>
     </li>
   ))
 
@@ -74,8 +96,10 @@ function App() {
           <iframe 
             src={activeDoc ? activeDoc.url : ''} title={activeDoc ? activeDoc.name : 'empty'}
             allow="fullscreen"
+            name="iframe-container"
+            id="iframe-container"
+            scrolling="no"
           >
-          Presss me: <a href="https://www.google.com">Download PDF</a>
           </iframe>
         </section>
       </main>
