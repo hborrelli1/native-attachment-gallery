@@ -84,6 +84,18 @@ function App() {
 
   let url = activeDoc ? activeDoc.url : ''
 
+  const iFrameEl = (
+    <iframe 
+      src={activeDoc ? activeDoc.url : ''} title={activeDoc ? activeDoc.name : 'empty'}
+      allow="fullscreen"
+      name="iframe-container"
+      id="iframe-container"
+      scrolling="no"
+    ></iframe>
+  )
+
+  console.log('rendering')
+
   return (
     <div className="App">
       <main>
@@ -93,14 +105,7 @@ function App() {
           </ul>
         </aside>
         <section>
-          <iframe 
-            src={activeDoc ? activeDoc.url : ''} title={activeDoc ? activeDoc.name : 'empty'}
-            allow="fullscreen"
-            name="iframe-container"
-            id="iframe-container"
-            scrolling="no"
-          >
-          </iframe>
+          {iFrameEl}
         </section>
       </main>
     </div>
