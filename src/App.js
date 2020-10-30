@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import './App.css';
-import FileViewer from 'react-file-viewer';
 import {FilePreviewerThumbnail} from 'react-file-previewer';
 
 function App() {
