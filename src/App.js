@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
 import {FilePreviewerThumbnail} from 'react-file-previewer';
+import _ from 'lodash';
 
 function App() {
   const [activeDoc, setActiveDoc] = useState(null);
@@ -38,7 +39,7 @@ function App() {
   ];
 
   const changeActiveDoc = (id) => {
-    let selectedDoc = docList.find(item => item.name === id);
+    let selectedDoc = _.find(docList, (item) => item.name === id);
     console.log('selectedDoc:', selectedDoc);
     setActiveDoc({...selectedDoc});
   }
