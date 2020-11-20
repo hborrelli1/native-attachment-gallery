@@ -15,7 +15,7 @@ function App() {
     {
       name: 'ft-lauderdale-info',
       type: 'pdf',
-      url: './documents/ft-lauderdale-info.pdf'
+      url: 'https://st1-userdata.gridics.com/fl/s3fs-public/tiles/projects/City%20of%20Fort%20Lauderdale%20FL%20Zoning%20Check%20_%20CodeHUB%20by%20Gridics.pdf'
     },
     {
       name: 'me',
@@ -46,11 +46,11 @@ function App() {
   
   
   useEffect(() => {
-    applyIframeStylesheet();
+    // applyIframeStylesheet();
   }, []);
   
-  const applyIframeStylesheet = () => {
-    let iframeElement = document.getElementById('iframe-container');
+  const applyIframeStylesheet = async () => {
+    let iframeElement = await document.getElementById('iframe-container');
     let doc = iframeElement.contentDocument;
     if (doc && doc.body) { 
       doc.body.innerHTML = doc.body.innerHTML+ `<style>body {height:100%;display:flex;justify-content:center;align-items:center;}</style>`;
@@ -61,6 +61,7 @@ function App() {
     let iframeElement = document.getElementById('iframe-container');
     let doc = iframeElement.contentDocument;
     let selectedDoc = _.find(docList, (item) => item.name === id);
+    console.log('selectedDoc', selectedDoc);
     setActiveDoc({...selectedDoc});
     setTimeout(() => {
       applyIframeStylesheet();
@@ -86,7 +87,8 @@ function App() {
 
   const iFrameEl = (
     <iframe 
-      src={activeDoc ? activeDoc.url : ''} title={activeDoc ? activeDoc.name : 'empty'}
+      src={activeDoc ? activeDoc.url : ''} 
+      title={activeDoc ? activeDoc.name : 'empty'}
       allow="fullscreen"
       name="iframe-container"
       id="iframe-container"
