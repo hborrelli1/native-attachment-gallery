@@ -47,16 +47,18 @@ function App() {
   
   
   useEffect(() => {
-    // applyIframeStylesheet();
+    applyIframeStylesheet();
   }, []);
   
-  // const applyIframeStylesheet = async () => {
-  //   let iframeElement = await document.getElementById('iframe-container');
-  //   let doc = iframeElement.contentDocument;
-  //   if (doc && doc.body) { 
-  //     doc.body.innerHTML = doc.body.innerHTML+ `<style>body {height:100%;display:flex;justify-content:center;align-items:center;}</style>`;
-  //   }
-  // }
+  const applyIframeStylesheet = async () => {
+    if (activeDoc) {
+      let iframeElement = await document.getElementById('iframe-container');
+      let doc = iframeElement.contentDocument;
+      if (doc && doc.body) { 
+        doc.body.innerHTML = doc.body.innerHTML+ `<style>body {height:100%;display:flex;justify-content:center;align-items:center;}</style>`;
+      }
+    }
+  }
 
   const changeActiveDoc = (id) => {
     // let iframeElement = document.getElementById('iframe-container');
@@ -64,9 +66,9 @@ function App() {
     let selectedDoc = _.find(docList, (item) => item.name === id);
     console.log('selectedDoc', selectedDoc);
     setActiveDoc({...selectedDoc});
-    // setTimeout(() => {
-    //   applyIframeStylesheet();
-    // }, 50)
+    setTimeout(() => {
+      applyIframeStylesheet();
+    }, 50)
   }
 
   let sideBarContent = docList.map(item => (
@@ -119,12 +121,13 @@ function App() {
           {activeDoc && (
             <Iframe 
               url={activeDoc.url}
-              width="450px"
-              height="450px"
-              id="myId"
+              width="`100%`"
+              height="100%"
+              id="iframe-container"
               className="myClassname"
               display="initial"
-              position="relative"/>
+              position="relative"
+            />
           )}
         </section>
       </main>
