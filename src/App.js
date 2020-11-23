@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import {FilePreviewerThumbnail} from 'react-file-previewer';
 import _ from 'lodash';
+import Iframe from 'react-iframe'
 
 // let cssLink = document.createElement("link");
 // cssLink.href = './iframe-styles.css'; 
@@ -49,23 +50,23 @@ function App() {
     // applyIframeStylesheet();
   }, []);
   
-  const applyIframeStylesheet = async () => {
-    let iframeElement = await document.getElementById('iframe-container');
-    let doc = iframeElement.contentDocument;
-    if (doc && doc.body) { 
-      doc.body.innerHTML = doc.body.innerHTML+ `<style>body {height:100%;display:flex;justify-content:center;align-items:center;}</style>`;
-    }
-  }
+  // const applyIframeStylesheet = async () => {
+  //   let iframeElement = await document.getElementById('iframe-container');
+  //   let doc = iframeElement.contentDocument;
+  //   if (doc && doc.body) { 
+  //     doc.body.innerHTML = doc.body.innerHTML+ `<style>body {height:100%;display:flex;justify-content:center;align-items:center;}</style>`;
+  //   }
+  // }
 
   const changeActiveDoc = (id) => {
-    let iframeElement = document.getElementById('iframe-container');
-    let doc = iframeElement.contentDocument;
+    // let iframeElement = document.getElementById('iframe-container');
+    // let doc = iframeElement.contentDocument;
     let selectedDoc = _.find(docList, (item) => item.name === id);
     console.log('selectedDoc', selectedDoc);
     setActiveDoc({...selectedDoc});
-    setTimeout(() => {
-      applyIframeStylesheet();
-    }, 50)
+    // setTimeout(() => {
+    //   applyIframeStylesheet();
+    // }, 50)
   }
 
   let sideBarContent = docList.map(item => (
@@ -85,16 +86,24 @@ function App() {
 
   let url = activeDoc ? activeDoc.url : ''
 
-  const iFrameEl = (
-    <iframe 
-      src={activeDoc ? activeDoc.url : ''} 
-      title={activeDoc ? activeDoc.name : 'empty'}
-      allow="fullscreen"
-      name="iframe-container"
-      id="iframe-container"
-      scrolling="no"
-    ></iframe>
-  )
+  // const iFrameEl = (
+  //   <iframe 
+  //     src={activeDoc ? activeDoc.url : ''} 
+  //     title={activeDoc ? activeDoc.name : 'empty'}
+  //     allow="fullscreen"
+  //     name="iframe-container"
+  //     id="iframe-container"
+  //     scrolling="no"
+  //   ></iframe>
+  // )
+
+  // const iFrameEl = (<Iframe url={activeDoc ? activeDoc.url : 'https://www.google.com'}
+  //       width="450px"
+  //       height="450px"
+  //       id="myId"
+  //       className="myClassname"
+  //       display="initial"
+  //       position="relative"/>)
 
   console.log('rendering')
 
@@ -107,7 +116,16 @@ function App() {
           </ul>
         </aside>
         <section>
-          {iFrameEl}
+          {activeDoc && (
+            <Iframe 
+              url={activeDoc.url}
+              width="450px"
+              height="450px"
+              id="myId"
+              className="myClassname"
+              display="initial"
+              position="relative"/>
+          )}
         </section>
       </main>
     </div>
