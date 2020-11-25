@@ -4,12 +4,6 @@ import {FilePreviewerThumbnail} from 'react-file-previewer';
 import _ from 'lodash';
 import Iframe from 'react-iframe'
 
-// let cssLink = document.createElement("link");
-// cssLink.href = './iframe-styles.css'; 
-// cssLink.rel = "stylesheet"; 
-// cssLink.type = "text/css"; 
-// frames['iframe-container'].document.head.appe ndChild(cssLink);
-
 function App() {
   const [activeDoc, setActiveDoc] = useState(null);
   const docList = [
@@ -45,17 +39,12 @@ function App() {
     }
   ];
   
-  
-  useEffect(() => {
-    applyIframeStylesheet();
-  }, []);
-  
   const applyIframeStylesheet = async () => {
     if (activeDoc) {
       let iframeElement = await document.getElementById('iframe-container');
       let doc = iframeElement.contentDocument;
       if (doc && doc.body) { 
-        doc.body.innerHTML = doc.body.innerHTML+ `<style>body {height:100%;display:flex;justify-content:center;align-items:center;}</style>`;
+        doc.body.innerHTML = doc.body.innerHTML+ `<style>body {width:100%;height:100%;display:flex;justify-content:center;align-items:center;} body img {width:100%;}</style>`;
       }
     }
   }
@@ -66,6 +55,7 @@ function App() {
     let selectedDoc = _.find(docList, (item) => item.name === id);
     console.log('selectedDoc', selectedDoc);
     setActiveDoc({...selectedDoc});
+    // setActiveDoc({});
     setTimeout(() => {
       applyIframeStylesheet();
     }, 50)
@@ -82,32 +72,24 @@ function App() {
         src={`./icons/${item.type}-icon.png`}
         alt="File type preview"
       />
-      <p>{item.name}</p>
+      <p>{`${item.name}.${item.type}`}</p>
     </li>
-  ))
+  ));
 
-  let url = activeDoc ? activeDoc.url : ''
-
-  // const iFrameEl = (
-  //   <iframe 
-  //     src={activeDoc ? activeDoc.url : ''} 
-  //     title={activeDoc ? activeDoc.name : 'empty'}
-  //     allow="fullscreen"
-  //     name="iframe-container"
-  //     id="iframe-container"
-  //     scrolling="no"
-  //   ></iframe>
-  // )
-
-  // const iFrameEl = (<Iframe url={activeDoc ? activeDoc.url : 'https://www.google.com'}
-  //       width="450px"
-  //       height="450px"
-  //       id="myId"
-  //       className="myClassname"
-  //       display="initial"
-  //       position="relative"/>)
+  const iFrameEl = (
+    <Iframe url={activeDoc ? activeDoc.url : 'https://www.google.com'}
+      width="450px"
+      height="450px"
+      id="iframe-container"
+      className="myClassname"
+      display="initial"
+      position="relative"
+    />
+  )
 
   console.log('rendering')
+
+  const displayIframe = _.isEmpty(activeDoc) ? '' : iFrameEl;
 
   return (
     <div className="App">
@@ -118,17 +100,7 @@ function App() {
           </ul>
         </aside>
         <section>
-          {activeDoc && (
-            <Iframe 
-              url={activeDoc.url}
-              width="`100%`"
-              height="100%"
-              id="iframe-container"
-              className="myClassname"
-              display="initial"
-              position="relative"
-            />
-          )}
+          {displayIframe}
         </section>
       </main>
     </div>
