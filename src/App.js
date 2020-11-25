@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
-import {FilePreviewerThumbnail} from 'react-file-previewer';
 import _ from 'lodash';
 import Iframe from 'react-iframe'
 
@@ -53,7 +52,6 @@ function App() {
     // let iframeElement = document.getElementById('iframe-container');
     // let doc = iframeElement.contentDocument;
     let selectedDoc = _.find(docList, (item) => item.name === id);
-    console.log('selectedDoc', selectedDoc);
     setActiveDoc({...selectedDoc});
     // setActiveDoc({});
     setTimeout(() => {
@@ -86,8 +84,6 @@ function App() {
       position="relative"
     />
   )
-
-  console.log('rendering')
 
   const displayIframe = _.isEmpty(activeDoc) ? '' : iFrameEl;
 
